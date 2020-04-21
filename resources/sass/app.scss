@@ -1,8 +1,51 @@
-@import 'variables';
-@import '~bootstrap/scss/bootstrap';
-@import '~sweetalert2/src/sweetalert2';
+// Fonts
+// @import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
 
-@import 'elements/card';
-@import 'elements/navbar';
-@import 'elements/buttons';
-@import 'elements/transitions';
+// Variables
+@import "variables";
+
+// Bootstrap
+@import '~rtl-bootstrap/scss/bootstrap';
+
+.dropdown-divider {
+	margin: 0 0 !important
+}
+.dropdown-menu {
+	padding: 0;
+}
+.active {
+	font-weight: 800
+}
+// Font Awesome
+// @import '~font-awesome/scss/font-awesome';
+
+
+// Dropzoned
+// @import "~dropzone/dist/basic";
+// @import "~dropzone/dist/dropzone";
+
+@import "mixins";
+@import "margins";
+@import "helpers";
+@import "typography";
+@import "buttons";
+@import "bootstrap-social";
+@import "badges";
+@import "panels";
+@import "wells";
+@import "modals";
+@import "socials";
+@import "forms";
+@import "lists";
+@import "avatar";
+@import "logs";
+@import "password";
+@import "hideShowPassword";
+@import "visibility";
+@import "user-profile";
+
+@import "piaf.light.blue";
+
+.has-loading {
+	min-height: 841px;
+}

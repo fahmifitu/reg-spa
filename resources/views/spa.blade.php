@@ -13,10 +13,9 @@ $config = [
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   <title>{{ config('app.name') }}</title>
-  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{{ mix('dist/css/app-rtl.css') }}">
+  <link rel="stylesheet" href="{{ mix('dist/css/app.css') }}">
 </head>
-<body>
+<body class="show-spinner">
   <div id="app"></div>
 
   {{-- Global configuration object --}}
