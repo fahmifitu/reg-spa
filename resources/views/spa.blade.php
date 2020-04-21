@@ -5,7 +5,6 @@ $config = [
     'locales' => config('app.locales'),
 ];
 @endphp
-<!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
 <head>
   <meta charset="utf-8">
