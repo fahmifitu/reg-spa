@@ -1,10 +1,3 @@
-@php
-$config = [
-    'appName' => config('app.name'),
-    'locale' => $locale = app()->getLocale(),
-    'locales' => config('app.locales'),
-];
-@endphp
 <html lang="{{ app()->getLocale() }}">
 <head>
   <meta charset="utf-8">
@@ -18,7 +11,7 @@ $config = [
 
   {{-- Global configuration object --}}
   <script>
-    window.config = @json($config);
+    window.config = {"appName":"Uni Registration","locale":"ar","locales":{"ar":"ar"}};;
   </script>
 
   {{-- Load the application scripts --}}
