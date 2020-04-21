@@ -18,7 +18,7 @@
 
     <div class="text-center">
       <div class="title mb-4">
-        {{ title }}
+        Landing Page
       </div>
     </div>
   </div>
