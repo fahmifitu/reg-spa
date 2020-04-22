@@ -36,5 +36,15 @@
   "send_verification_link": "ارسال رابط التفعيل",
   "resend_verification_link": "اعادة ارسال رابط التفعيل ?",
   "failed_to_verify_email": "فشل تفعيل بريدك الالكتروني. حاول مجددا لاحقا",
-  "verify_email_address": "تم ارسال رابط الى بريدك الالكتروني."
+  "verify_email_address": "تم ارسال رابط الى بريدك الالكتروني.",
+  "verify_phone_number": "تم ارسال رمز التفعيل الى رقم هاتفك. الرجاء قم بإدخاله لإتمام عملية التسجيل",
+
+  "verify_code": "رمز التفعيل",
+  "national_id": "الرقم الوطني",
+  "passport_no": "جواز السفر",
+  "employer": "جهة العمل",
+  "branch": "الفرع المصرفي",
+  "bank": "المصرف",
+  "city": "المدينة",
+  "address": "العنوان"
 }

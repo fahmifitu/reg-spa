@@ -8,3 +8,9 @@ export const UPDATE_USER = 'UPDATE_USER'
 
 // lang.js
 export const SET_LOCALE = 'SET_LOCALE'
+
+
+// registration.js
+export const REMOVE_GUEST = 'REMOVE_GUEST'
+export const SAVE_GUEST = 'SAVE_GUEST'
+export const GET_GUEST = 'GET_GUEST'

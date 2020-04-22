@@ -126,7 +126,7 @@ html {
 
 body {
   font-family: "Tajawal", sans-serif;
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 400;
   color: $primary-color;
   background: $background-color;
@@ -402,7 +402,7 @@ a {
 }
 
 p {
-  font-size: 0.85rem;
+  font-size: 1rem;
   line-height: 1.3rem;
   font-family: "Tajawal", sans-serif;
 }
@@ -4667,7 +4667,7 @@ select.form-control:not([size]):not([multiple]) {
   border-radius: $border-radius;
   outline: initial !important;
   box-shadow: initial !important;
-  font-size: 0.9rem;
+  font-size: 1.05rem;
   padding: 0.7rem 0.75rem 0.65rem 0.75rem;
   line-height: 1.4;
   border: 1px solid $separator-color;

@@ -1,11 +1,9 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-white">
-    <a class="navbar-logo" href="/">
-    <span class="logo-single"></span>
-    </a>
+
     <div class="container">
       <router-link :to="{ name: user ? 'home' : 'welcome' }" class="navbar-brand">
-        {{ appName }}
+        <span class="logo-single"></span>
       </router-link>
 
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false">
@@ -44,11 +42,11 @@
           </li>
           <!-- Guest -->
           <template v-else>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <router-link :to="{ name: 'login' }" class="nav-link" active-class="active">
                 {{ $t('login') }}
               </router-link>
-            </li>
+            </li> -->
             <li class="nav-item">
               <router-link :to="{ name: 'register' }" class="nav-link" active-class="active">
                 {{ $t('register') }}

@@ -4,7 +4,7 @@
     'btn-block': block,
     'btn-lg': large,
     'btn-loading': loading
-  }" class="btn"
+  }" class="btn btn-bold"
   >
     <slot />
   </button>
@@ -37,7 +37,7 @@ export default {
 
     large: {
       type: Boolean,
-      default: false
+      default: true
     }
   }
 }
