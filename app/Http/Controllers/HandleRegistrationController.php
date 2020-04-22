@@ -112,7 +112,7 @@ class HandleRegistrationController extends Controller
             'date_of_birth' => now(),
             'address' => $input['address'],
             'passport_no' => $input['passport_no'],
-            'employer_name' => $input['employer'],
+            'employer' => $input['employer'],
             'bank' => $input['bank'],
             'branch' => $input['branch'],
             'phone_verified_at' => $verified_at
