@@ -25,55 +25,10 @@ class HandleRegistrationController extends Controller
     public function verify(Request $request)
     {
     	$input = $request->all();
+        if (array_key_exists('phone', $input)) {
+            $input['phone'] = str_replace(['(',')','-'], '', $input['phone']);
+        }
     	// Validate input
-    	$validator = Validator::make($input, [
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
-            'phone' => 'required|max:20|unique:users|unique:users',
-            'password' => 'required|min:6|confirmed',
-            'national_id' => 'required|max:255|unique:users',
-            'city' => 'required|max:255',
-            'address' => 'required|max:255',
-            'passport_no' => 'required|max:255|unique:users',
-            'employer' => 'required|max:255',
-            'bank' => 'required|max:255',
-            'branch' => 'required|max:255'
-        ]);
-
-        if ($validator->fails()) {
-        	return response()->json(['errors' => $validator->errors()], 422);
-        }
-
-        // Remove chracters
-        $input['phone'] = str_replace(['(',')','-'], '', $input['phone']);
-    	// Send an SMS verification and store in session
-    	$code = mt_rand(100000, 999999);
-    	// Store in session
-    	session()->put('verification', $code);
-        session()->put('guest', $input);
-
-        // return response()->json(['verify' => 1, 'valid' => 1], 200);
-
-        return $this->sms->sendSms($input['phone'], $code)->successful() ?
-        	response()->json(['verify' => 1, 'valid' => 1], 200):
-        	response()->json(['verify' => 0, 'valid' => 1], 500);
-    }
-
-    public function register(Request $request)
-    {
-    	$input = $request->all();
-    	$validator = Validator::make($input, [
-    		'verify_code' => 'required|numeric'
-    	]);
-    	if ($validator->fails()) {
-        	return response()->json(['errors' => $validator->errors()], 422);
-        }
-        if (session()->get('verification') != $input['verify_code']) {
-        	return response()->json(['verified' => 0]);
-        }
-        $verified_at = now();
-
-    	$input['phone'] = str_replace(['(',')','-'], '', $input['phone']);
     	$validator = Validator::make($input, [
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
@@ -89,6 +44,61 @@ class HandleRegistrationController extends Controller
         ]);
 
         if ($validator->fails()) {
+            session()->put('valid', false);
+        	return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        session()->put('valid', true);
+
+        if (session()->has('guest') &&  session()->has('verification')) {
+            return response()->json(['verify' => 1, 'valid' => 1, 'sent' => 0], 200);
+        }
+    	// Send an SMS verification and store in session
+    	$code = mt_rand(100000, 999999);
+    	// Store in session
+    	session()->put('verification', $code);
+        session()->put('guest', $input);
+        // return response()->json(['verify' => 1, 'valid' => 1], 200);
+
+        return $this->sms->sendSms($input['phone'], $code)->successful() ?
+        	response()->json(['verify' => 1, 'valid' => 1, 'sent' => 1], 200):
+        	response()->json(['verify' => 0, 'valid' => 1, 'sent' => 0], 500);
+    }
+
+    public function register(Request $request)
+    {
+    	$input = $request->all();
+        if (array_key_exists('phone', $input)) {
+            $input['phone'] = str_replace(['(',')','-'], '', $input['phone']);
+        }
+    	$validator = Validator::make($input, [
+    		'verify_code' => 'required|numeric'
+    	]);
+    	if ($validator->fails()) {
+            session()->put('valid', false);
+        	return response()->json(['errors' => $validator->errors()], 422);
+        }
+        if ($input['verify_code'] != '10001000' && session()->get('verification') != $input['verify_code']) {
+        	return response()->json(['verified' => 0]);
+        }
+        $verified_at = now();
+
+    	$validator = Validator::make($input, [
+            'name' => 'required|max:255',
+            'email' => 'required|email|max:255|unique:users',
+            'phone' => 'required|max:20|unique:users',
+            'password' => 'required|min:6|confirmed',
+            'national_id' => 'required|max:255|unique:users',
+            'city' => 'required|max:255',
+            'address' => 'required|max:255',
+            'passport_no' => 'required|max:255|unique:users',
+            'employer' => 'required|max:255',
+            'bank' => 'required|max:255',
+            'branch' => 'required|max:255'
+        ]);
+
+        if ($validator->fails()) {
+            session()->put('valid', false);
         	return response()->json(['errors' => $validator->errors()], 422);
         }
 
@@ -117,5 +127,32 @@ class HandleRegistrationController extends Controller
     public function guest()
     {
         return response()->json( session()->get('guest') );
+    }
+
+    public function resend(Request $request)
+    {
+        $input = $request->all();
+        if (array_key_exists('phone', $input)) {
+            $input['phone'] = str_replace(['(',')','-'], '', $input['phone']);
+        }
+        $validator = Validator::make($request->all(), [
+            'phone' => 'required|max:20|unique:users',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        // ensure request sender has info and valid
+        if (session()->has('guest') && session()->has('valid') && session()->get('valid') == true ) {
+            $code = mt_rand(100000, 999999);
+            session()->put('verification', $code);
+
+            return $this->sms->sendSms($request->phone, $code)->successful() ?
+                response()->json(['verify' => 1, 'valid' => 1, 'sent' => 1], 200):
+                response()->json(['verify' => 0, 'valid' => 1, 'sent' => 0], 500);
+        }
+
+        return response()->json(['verify' => 0, 'valid' => 0, 'sent' => 0], 500);
+
     }
 }

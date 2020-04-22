@@ -6,7 +6,7 @@
   <title>{{ config('app.name') }}</title>
   <link rel="stylesheet" href="/dist/css/app.css">
 </head>
-<body class="show-spinner" style="padding-bottom: 50px">
+<body id="app-container" class="menu-hidden show-spinner" style="padding-bottom: 50px">
   <div id="app"></div>
 
   {{-- Global configuration object --}}

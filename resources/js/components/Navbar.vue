@@ -6,11 +6,11 @@
         <span class="logo-single"></span>
       </router-link>
 
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false">
+      <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false">
         <span class="navbar-toggler-icon" />
-      </button>
+      </button> -->
 
-      <div id="navbarToggler" class="collapse navbar-collapse">
+      <div id="navbarToggler">
         <ul class="navbar-nav">
           <!-- <locale-dropdown /> -->
           <!-- <li class="nav-item">
@@ -47,7 +47,7 @@
                 {{ $t('login') }}
               </router-link>
             </li> -->
-            <li class="nav-item">
+            <li class="nav-item pl-3">
               <router-link :to="{ name: 'register' }" class="nav-link" active-class="active">
                 {{ $t('register') }}
               </router-link>

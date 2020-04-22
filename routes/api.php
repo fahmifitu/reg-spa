@@ -11,6 +11,7 @@ Route::group(['middleware' => 'guest:api'], function () {
     Route::post('validate-registration', 'HandleRegistrationController@verify');
     Route::post('register', 'HandleRegistrationController@register');
     Route::get('guest', 'HandleRegistrationController@guest');
+    Route::post('resend', 'HandleRegistrationController@resend');
     Route::post('login', 'Auth\LoginController@login');
 
     // Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail');

@@ -1,14 +1,10 @@
 <template>
   <div class="row">
     <div class="col-lg-10 m-auto">
-      <div class="alert alert-success" role="alert" v-if="mustVerifyPhone">
+      <div class="alert alert-info" role="alert" v-if="sent">
         {{ $t('verify_phone_number') }}
       </div>
-      <card v-if="mustVerifyPhone" :title="$t('register')" :subtitle="'الرجاء ادخل رمز التفعيل'">
-        <!-- <div class="row justify-content-center">
-          <div class="col-md-10">
-          </div>
-        </div> -->
+      <card v-if="mustVerifyPhone" :title="'2. التفعيل'" :subtitle="'الرجاء ادخال رمز التفعيل'">
         <form @submit.prevent="verify" @keydown="form.onKeydown($event)">
           <div class="form-group row justify-content-center">
             <div class="col-md-10">
@@ -26,17 +22,23 @@
           </div>
           <div class="form-group row justify-content-center mt-4">
             <div class="col-md-10 d-flex justify-content-between">
+              <div>
+                <a class="btn btn-lg btn-outline-light" @click.prevent="back">
+                عودة
+                </a>
+                <a class="btn btn-lg btn-light" @click.prevent="resend">
+                اعادة ارسال
+                </a>
+              </div>
               <v-button :loading="form.busy" :type="'success'">
                 تأكيد
               </v-button>
-              <a class="btn btn-lg btn-light" @click.prevent="register">
-                اعادة ارسال
-              </a>
+
             </div>
           </div>
         </form>
       </card>
-      <card v-else :title="$t('register')" :subtitle="'الرجاء ادخل البيانات المطلوبة'">
+      <card v-else :title="'1. التسجيل'" :subtitle="'الرجاء ادخل البيانات المطلوبة'">
         <form @submit.prevent="register" @keydown="form.onKeydown($event)">
           <!-- Name -->
           <div class="form-group row justify-content-center">
@@ -170,6 +172,7 @@ export default {
   },
 
   data: () => ({
+    sent: false,
     form: new Form({
       name: '',
       national_id: '',
@@ -191,14 +194,37 @@ export default {
     axios.get('/api/guest').then(res => {
       const input = res.data;
       this.form = new Form(input);
+      if (this.form.name == null) {
+        this.mustVerifyPhone = false;
+      } else {
+        this.mustVerifyPhone = true;
+      }
     })
   },
   methods: {
     back() {
+      this.sent = false
+      this.form.verify_code = ''
       this.mustVerifyPhone = false
     },
-    resend() {
-      this.mustVerifyPhone = false
+    async resend() {
+      this.sent = false
+      this.form.verify_code = ''
+      const { data } =  await this.form.post('/api/resend')
+      if (data.valid == 1 && data.verify == 1) {
+        setTimeout(function() {
+          this.sent = true
+        }, 1000)
+      }
+      if (data.valid == 0 && data.verify == 0) {
+        Swal.fire({
+          type: 'error',
+          title: 'خطأ في عملية التسجيل!',
+          text: 'ارجو اعادة المحاولة'
+        })
+        this.back()
+      }
+      this.sent = data.sent
     },
     async verify () {
       const { data } = await this.form.post('/api/register')
@@ -215,32 +241,16 @@ export default {
           'سيتم التواصل معك قريبا.',
           'success'
         )
-        this.$router.push({ name: 'login' })
+        location.reload();
       }
     },
     async register () {
       // Register the user.
-      const { data } = await this.form.post('/api/validate-registration')
+      const { data } = await this.form.post('/api/validate-registration', {phone: this.form.phone})
       if (data.valid == 1 && data.verify == 1) {
-        this.$store.dispatch('registration/saveGuest', this.form)
         this.mustVerifyPhone = true
       }
-      // Must verify email fist.
-      // if (data.status) {
-      //   this.mustVerifyPhone = true
-      // } else {
-      //   // Log in the user.
-      //   const { data: { token } } = await this.form.post('/api/login')
-
-      //   // Save the token.
-      //   this.$store.dispatch('auth/saveToken', { token })
-
-      //   // Update the user.
-      //   await this.$store.dispatch('auth/updateUser', { user: data })
-
-      //   // Redirect home.
-      //   this.$router.push({ name: 'home' })
-      // }
+      this.sent = data.sent
     }
   }
 }
