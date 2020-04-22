@@ -34,7 +34,7 @@
               </router-link>
 
               <div class="dropdown-divider" />
-              <a href="#" class="dropdown-item pl-3" @click.prevent="logout">
+              <a href="#" class="dropdown-item pl-3 pr-3" @click.prevent="logout">
                 <fa icon="sign-out-alt" fixed-width />
                 {{ $t('logout') }}
               </a>

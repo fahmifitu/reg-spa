@@ -4,7 +4,7 @@
       <div class="alert alert-info" role="alert" v-if="sent">
         {{ $t('verify_phone_number') }}
       </div>
-      <card v-if="mustVerifyPhone" :title="'2. التفعيل'" :subtitle="'الرجاء ادخال رمز التفعيل'">
+      <card v-if="mustVerifyPhone" :title="'2. التفعيل'" :subtitle="'الرجاء ادخال رمز التفعيل'" :loading="form.busy">
         <form @submit.prevent="verify" @keydown="form.onKeydown($event)">
           <div class="form-group row justify-content-center">
             <div class="col-md-10">
@@ -38,21 +38,33 @@
           </div>
         </form>
       </card>
-      <card v-else :title="'1. التسجيل'" :subtitle="'الرجاء ادخل البيانات المطلوبة'">
+      <card v-else :title="'1. التسجيل'" :subtitle="'الرجاء ادخل البيانات المطلوبة'" :loading="form.busy">
         <form @submit.prevent="register" @keydown="form.onKeydown($event)">
           <!-- Name -->
+          <!-- City Address -->
           <div class="form-group row justify-content-center">
-            <div class="col-md-10">
-              <label>{{ $t('name') }}</label>
-              <input v-model="form.name" :class="{ 'is-invalid': form.errors.has('name') }" class="form-control" type="text" name="name">
-              <has-error :form="form" field="name" />
+            <div class="col-md-5">
+              <div class="form-group">
+                <label>{{ $t('name') }}</label>
+                <span class="text-danger text-small">*</span>
+                <input v-model="form.name" :class="{ 'is-invalid': form.errors.has('name') }" class="form-control" type="text" name="name">
+                <has-error :form="form" field="name" />
+              </div>
+            </div>
+            <div class="col-md-5">
+            <div class="form-group">
+              <label>{{ $t('date_of_birth') }}</label>
+              <span class="text-danger text-small">*</span>
+              <input v-model="form.date_of_birth" :class="{ 'is-invalid': form.errors.has('date_of_birth') }" class="form-control" type="date" name="date_of_birth">
+              <has-error :form="form" field="date_of_birth" />
+            </div>
             </div>
           </div>
-
           <!-- National id -->
           <div class="form-group row justify-content-center">
             <div class="col-md-10">
               <label>{{ $t('national_id') }}</label>
+              <span class="text-danger text-small">*</span>
               <input v-model="form.national_id" :class="{ 'is-invalid': form.errors.has('national_id') }" class="form-control" type="text" name="national_id">
               <has-error :form="form" field="national_id" />
             </div>
@@ -71,6 +83,7 @@
           <div class="form-group row justify-content-center">
             <div class="col-md-10">
               <label>{{ $t('employer') }}</label>
+              <span class="text-danger text-small">*</span>
               <input v-model="form.employer" :class="{ 'is-invalid': form.errors.has('employer') }" class="form-control" type="text" name="employer">
               <has-error :form="form" field="employer" />
             </div>
@@ -80,6 +93,7 @@
           <div class="form-group row justify-content-center">
             <div class="col-md-10">
               <label>{{ $t('email') }}</label>
+              <span class="text-danger text-small">*</span>
               <input v-model="form.email" :class="{ 'is-invalid': form.errors.has('email') }" class="form-control" type="email" name="email">
               <has-error :form="form" field="email" />
             </div>
@@ -88,6 +102,7 @@
           <div class="form-group row justify-content-center">
             <div class="col-md-10">
               <label>{{ $t('phone') }}</label>
+              <span class="text-danger text-small">*</span>
               <input dir="ltr" style="text-align: end" v-model="form.phone" :class="{ 'is-invalid': form.errors.has('phone') }" class="form-control" type="text" name="phone" v-mask="'(##)###-####'" placeholder="(91)999-9999">
               <has-error :form="form" field="phone" />
             </div>
@@ -114,6 +129,7 @@
             <div class="col-md-5">
               <div class="form-group">
                 <label>{{ $t('city') }}</label>
+                <span class="text-danger text-small">*</span>
                 <input v-model="form.city" :class="{ 'is-invalid': form.errors.has('city') }" class="form-control" type="text" name="city">
                 <has-error :form="form" field="city" />
               </div>
@@ -121,6 +137,7 @@
             <div class="col-md-5">
             <div class="form-group">
               <label>{{ $t('address') }}</label>
+              <span class="text-danger text-small">*</span>
               <input v-model="form.address" :class="{ 'is-invalid': form.errors.has('address') }" class="form-control" type="text" name="address">
               <has-error :form="form" field="address" />
             </div>
@@ -131,6 +148,7 @@
             <div class="col-md-5">
               <div class="form-group">
                 <label>{{ $t('password') }}</label>
+                <span class="text-danger text-small">*</span>
                 <input v-model="form.password" :class="{ 'is-invalid': form.errors.has('password') }" class="form-control" type="password" name="password">
                 <has-error :form="form" field="password" />
               </div>
@@ -138,6 +156,7 @@
             <div class="col-md-5">
             <div class="form-group">
               <label>{{ $t('confirm_password') }}</label>
+              <span class="text-danger text-small">*</span>
               <input v-model="form.password_confirmation" :class="{ 'is-invalid': form.errors.has('password_confirmation') }" class="form-control" type="password" name="password_confirmation">
               <has-error :form="form" field="password_confirmation" />
             </div>
@@ -186,11 +205,13 @@ export default {
       branch: '',
       password: '',
       password_confirmation: '',
-      verify_code: ''
+      verify_code: '',
+      date_of_birth: ''
     }),
     mustVerifyPhone: false
   }),
   created() {
+    this.form.busy = true
     axios.get('/api/guest').then(res => {
       const input = res.data;
       this.form = new Form(input);
@@ -199,6 +220,7 @@ export default {
       } else {
         this.mustVerifyPhone = true;
       }
+      this.form.busy = false
     })
   },
   methods: {
@@ -232,16 +254,19 @@ export default {
         Swal.fire({
           type: 'error',
           title: 'خطأ في التفعيل!',
-          text: 'ارجو التأكد من رمز التفعيل!'
+          text: 'ارجو التأكد من رمز التفعيل.'
         })
       }
       if (data.verified == 1 && data.registered == 1) {
-        Swal.fire(
-          'تم عملية التسجيل بنجاح!',
-          'سيتم التواصل معك قريبا.',
-          'success'
-        )
-        location.reload();
+        Swal.fire({
+          type: 'success',
+          title: 'تم عملية التسجيل بنجاح!',
+          text: 'سيتم التواصل معك قريبا.',
+          timer: 4000,
+          onClose: function() {
+            location.reload();
+          }
+        })
       }
     },
     async register () {

@@ -11,7 +11,20 @@ class HandleRegistrationController extends Controller
 {
 	private $sms;
 	private $validator;
-
+    private $rules = [
+        'name' => 'required|max:255',
+        'date_of_birth' => 'required|date',
+        'email' => 'required|email|max:255|unique:users',
+        'phone' => 'required|min:9|max:20|unique:users',
+        'password' => 'required|min:6|confirmed',
+        'national_id' => 'required|max:255|unique:users',
+        'city' => 'required|max:255',
+        'address' => 'required|max:255',
+        'passport_no' => 'max:255|unique:users',
+        'employer' => 'required|max:255',
+        'bank' => 'max:100',
+        'branch' => 'max:100',
+    ];
 	public function __construct(SmsApiService $api)
     {
         $this->sms = $api;
@@ -29,19 +42,7 @@ class HandleRegistrationController extends Controller
             $input['phone'] = str_replace(['(',')','-'], '', $input['phone']);
         }
     	// Validate input
-    	$validator = Validator::make($input, [
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
-            'phone' => 'required|max:20|unique:users',
-            'password' => 'required|min:6|confirmed',
-            'national_id' => 'required|max:255|unique:users',
-            'city' => 'required|max:255',
-            'address' => 'required|max:255',
-            'passport_no' => 'required|max:255|unique:users',
-            'employer' => 'required|max:255',
-            'bank' => 'required|max:255',
-            'branch' => 'required|max:255'
-        ]);
+    	$validator = Validator::make($input, $this->rules);
 
         if ($validator->fails()) {
             session()->put('valid', false);
@@ -64,7 +65,9 @@ class HandleRegistrationController extends Controller
         	response()->json(['verify' => 1, 'valid' => 1, 'sent' => 1], 200):
         	response()->json(['verify' => 0, 'valid' => 1, 'sent' => 0], 500);
     }
-
+    /*
+    * Regi
+    */
     public function register(Request $request)
     {
     	$input = $request->all();
@@ -72,30 +75,18 @@ class HandleRegistrationController extends Controller
             $input['phone'] = str_replace(['(',')','-'], '', $input['phone']);
         }
     	$validator = Validator::make($input, [
-    		'verify_code' => 'required|numeric'
+    		'verify_code' => 'required|max:20'
     	]);
     	if ($validator->fails()) {
-            session()->put('valid', false);
         	return response()->json(['errors' => $validator->errors()], 422);
         }
+
         if ($input['verify_code'] != '10001000' && session()->get('verification') != $input['verify_code']) {
         	return response()->json(['verified' => 0]);
         }
         $verified_at = now();
 
-    	$validator = Validator::make($input, [
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
-            'phone' => 'required|max:20|unique:users',
-            'password' => 'required|min:6|confirmed',
-            'national_id' => 'required|max:255|unique:users',
-            'city' => 'required|max:255',
-            'address' => 'required|max:255',
-            'passport_no' => 'required|max:255|unique:users',
-            'employer' => 'required|max:255',
-            'bank' => 'required|max:255',
-            'branch' => 'required|max:255'
-        ]);
+    	$validator = Validator::make($input, $this->rules);
 
         if ($validator->fails()) {
             session()->put('valid', false);
@@ -105,6 +96,7 @@ class HandleRegistrationController extends Controller
         $user = User::create([
             'name' => $input['name'],
             'email' => $input['email'],
+            'date_of_birth' => $input['date_of_birth'],
             'phone' => $input['phone'],
             'password' => bcrypt($input['password']),
             'national_id' => $input['national_id'],
@@ -135,8 +127,8 @@ class HandleRegistrationController extends Controller
         if (array_key_exists('phone', $input)) {
             $input['phone'] = str_replace(['(',')','-'], '', $input['phone']);
         }
-        $validator = Validator::make($request->all(), [
-            'phone' => 'required|max:20|unique:users',
+        $validator = Validator::make($input, [
+            'phone' => $this->rules['phone'],
         ]);
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);

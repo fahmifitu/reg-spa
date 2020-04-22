@@ -147,6 +147,13 @@ return [
     */
 
     'attributes' => [
+        'verify_code'                  => 'رمز التفعيل',
+        'date_of_birth'                  => 'تاريخ الميلاد',
+        'national_id'                  => 'الرقم الوطني',
+        'passport_no'                  => 'رقم جواز السفر',
+        'employer'                  => 'جهة العمل',
+        'branch'                  => 'الفرع المصرف',
+        'bank'                  => 'المصرف',
         'name'                  => 'الاسم',
         'username'              => 'اسم المُستخدم',
         'email'                 => 'البريد الالكتروني',
