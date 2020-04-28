@@ -5,6 +5,7 @@
 
   <title>{{ config('app.name') }}</title>
   <link rel="stylesheet" href="/dist/css/app.css">
+  <link rel="shortcut icon" href="/images/favicon.ico" />
 </head>
 <body id="app-container" class="menu-hidden show-spinner" style="padding-bottom: 50px">
   <div id="app"></div>
