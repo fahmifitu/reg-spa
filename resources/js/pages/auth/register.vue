@@ -38,16 +38,15 @@
           </div>
         </form>
       </card>
-      <card v-else :title="'1. التسجيل'" :subtitle="'الرجاء ادخل البيانات المطلوبة'" :loading="form.busy">
-        <form @submit.prevent="register" @keydown="form.onKeydown($event)">
-          <!-- Name -->
-          <!-- City Address -->
-          <div class="form-group row justify-content-center">
+      <card v-else :title="'1. التسجيل'" :subtitle="'الرجاء ادخال البيانات المطلوبة'" :loading="form.busy">
+        <form @submit.prevent="register" @keydown="form.onKeydown($event)" enctype="multipart/form-data">
+          <!-- Name Date of birth-->
+          <div class="row justify-content-center">
             <div class="col-md-5">
               <div class="form-group">
                 <label>{{ $t('name') }}</label>
                 <span class="text-danger text-small">*</span>
-                <input v-model="form.name" :class="{ 'is-invalid': form.errors.has('name') }" class="form-control" type="text" name="name">
+                <input v-model="form.name" :class="{ 'is-invalid': form.errors.has('name') }" class="form-control" type="text" name="name" autofocus>
                 <has-error :form="form" field="name" />
               </div>
             </div>
@@ -60,72 +59,17 @@
             </div>
             </div>
           </div>
-          <!-- National id -->
-          <div class="form-group row justify-content-center">
-            <div class="col-md-10">
-              <label>{{ $t('national_id') }}</label>
-              <span class="text-danger text-small">*</span>
-              <input v-model="form.national_id" :class="{ 'is-invalid': form.errors.has('national_id') }" class="form-control" type="text" name="national_id">
-              <has-error :form="form" field="national_id" />
-            </div>
-          </div>
-
-          <!-- Passport no -->
-          <div class="form-group row justify-content-center">
-            <div class="col-md-10">
-              <label>{{ $t('passport_no') }}</label>
-              <input v-model="form.passport_no" :class="{ 'is-invalid': form.errors.has('passport_no') }" class="form-control" type="text" name="passport_no">
-              <has-error :form="form" field="passport_no" />
-            </div>
-          </div>
-
-          <!-- Employer -->
-          <div class="form-group row justify-content-center">
-            <div class="col-md-10">
-              <label>{{ $t('employer') }}</label>
-              <span class="text-danger text-small">*</span>
-              <input v-model="form.employer" :class="{ 'is-invalid': form.errors.has('employer') }" class="form-control" type="text" name="employer">
-              <has-error :form="form" field="employer" />
-            </div>
-          </div>
-
-          <!-- Email -->
-          <div class="form-group row justify-content-center">
-            <div class="col-md-10">
-              <label>{{ $t('email') }}</label>
-              <span class="text-danger text-small">*</span>
-              <input v-model="form.email" :class="{ 'is-invalid': form.errors.has('email') }" class="form-control" type="email" name="email">
-              <has-error :form="form" field="email" />
-            </div>
-          </div>
           <!-- Phone -->
           <div class="form-group row justify-content-center">
             <div class="col-md-10">
               <label>{{ $t('phone') }}</label>
               <span class="text-danger text-small">*</span>
-              <input dir="ltr" style="text-align: end" v-model="form.phone" :class="{ 'is-invalid': form.errors.has('phone') }" class="form-control" type="text" name="phone" v-mask="'(##)###-####'" placeholder="(91)999-9999">
+              <input dir="ltr" style="text-align: end" v-model="form.phone" :class="{ 'is-invalid': form.errors.has('phone') }" class="form-control" type="text" name="phone" v-mask="'(##)###-####'" placeholder="(91)000-0000">
               <has-error :form="form" field="phone" />
             </div>
           </div>
           <!-- City Address -->
-          <div class="form-group row justify-content-center">
-            <div class="col-md-5">
-              <div class="form-group">
-                <label>{{ $t('branch') }}</label>
-                <input v-model="form.branch" :class="{ 'is-invalid': form.errors.has('branch') }" class="form-control" type="text" name="branch">
-                <has-error :form="form" field="branch" />
-              </div>
-            </div>
-            <div class="col-md-5">
-            <div class="form-group">
-              <label>{{ $t('bank') }}</label>
-              <input v-model="form.bank" :class="{ 'is-invalid': form.errors.has('bank') }" class="form-control" type="text" name="bank">
-              <has-error :form="form" field="bank" />
-            </div>
-            </div>
-          </div>
-          <!-- City Address -->
-          <div class="form-group row justify-content-center">
+          <div class="row justify-content-center">
             <div class="col-md-5">
               <div class="form-group">
                 <label>{{ $t('city') }}</label>
@@ -143,8 +87,82 @@
             </div>
             </div>
           </div>
-          <!-- Password -->
+          <div class="p-3"></div>
+          <!-- National ID file-->
+          <div class="row justify-content-center">
+            <div class="col-md-5">
+              <div class="form-group">
+                <label>{{ $t('national_id') }}</label>
+                <span class="text-danger text-small">*</span>
+                <input v-model="form.national_id" :class="{ 'is-invalid': form.errors.has('national_id') }" class="form-control" type="text" name="national_id">
+                <has-error :form="form" field="national_id" />
+              </div>
+            </div>
+            <div class="col-md-5">
+            <div class="form-group">
+              <label>{{ $t('national_id_file') }}</label>
+              <span class="text-danger text-small">*</span>
+              <input @change="handleFile" :class="{ 'is-invalid': form.errors.has('national_id_file') }" class="form-control" type="file" name="national_id_file" ref="file">
+              <has-error :form="form" field="national_id_file" />
+            </div>
+            </div>
+          </div>
+          <!-- Passport no -->
           <div class="form-group row justify-content-center">
+            <div class="col-md-10">
+              <label>{{ $t('passport_no') }}</label>
+              <input v-model="form.passport_no" :class="{ 'is-invalid': form.errors.has('passport_no') }" class="form-control" type="text" name="passport_no">
+              <has-error :form="form" field="passport_no" />
+            </div>
+          </div>
+          <!-- Employer employee -->
+          <div class="row justify-content-center">
+            <div class="col-md-5">
+              <div class="form-group">
+                <label>{{ $t('employee_no') }}</label>
+                <span class="text-danger text-small">*</span>
+                <input v-model="form.employee_no" :class="{ 'is-invalid': form.errors.has('employee_no') }" class="form-control" type="text" name="employee_no">
+                <has-error :form="form" field="employee_no" />
+              </div>
+            </div>
+            <div class="col-md-5">
+            <div class="form-group">
+              <label>{{ $t('employer') }}</label>
+              <span class="text-danger text-small">*</span>
+              <input v-model="form.employer" :class="{ 'is-invalid': form.errors.has('employer') }" class="form-control" type="text" name="employer">
+              <has-error :form="form" field="employer" />
+            </div>
+            </div>
+          </div>
+          <!-- Branch Bank -->
+          <div class="row justify-content-center">
+            <div class="col-md-5">
+              <div class="form-group">
+                <label>{{ $t('branch') }}</label>
+                <input v-model="form.branch" :class="{ 'is-invalid': form.errors.has('branch') }" class="form-control" type="text" name="branch">
+                <has-error :form="form" field="branch" />
+              </div>
+            </div>
+            <div class="col-md-5">
+            <div class="form-group">
+              <label>{{ $t('bank') }}</label>
+              <input v-model="form.bank" :class="{ 'is-invalid': form.errors.has('bank') }" class="form-control" type="text" name="bank">
+              <has-error :form="form" field="bank" />
+            </div>
+            </div>
+          </div>
+          <div class="p-3"></div>
+          <!-- Email -->
+          <div class="form-group row justify-content-center">
+            <div class="col-md-10">
+              <label>{{ $t('email') }}</label>
+              <span class="text-danger text-small">*</span>
+              <input v-model="form.email" :class="{ 'is-invalid': form.errors.has('email') }" class="form-control" type="email" name="email">
+              <has-error :form="form" field="email" />
+            </div>
+          </div>
+          <!-- Password -->
+          <div class="row justify-content-center">
             <div class="col-md-5">
               <div class="form-group">
                 <label>{{ $t('password') }}</label>
@@ -164,9 +182,9 @@
           </div>
 
           <div class="form-group row">
-            <div class="col-md-10 offset-md-1 d-flex">
+            <div class="col-md-10 offset-md-1 d-flex justify-content-end pt-3">
               <!-- Submit Button -->
-              <v-button :loading="form.busy">
+              <v-button :loading="form.busy" class="btn-shadow">
                 {{ $t('register') }}
               </v-button>
             </div>
@@ -182,6 +200,7 @@ import {Form, AlertErrors} from 'vform'
 import Swal from 'sweetalert2'
 import store from 'vuex'
 import axios from 'axios'
+import { objectToFormData } from 'object-to-formdata'
 
 export default {
   middleware: 'guest',
@@ -195,10 +214,12 @@ export default {
     form: new Form({
       name: '',
       national_id: '',
+      national_id_file: null,
       phone: '',
       city: '',
       address: '',
       passport_no: '',
+      employee_no: '',
       employer: '',
       email: '',
       bank: '',
@@ -224,6 +245,9 @@ export default {
     })
   },
   methods: {
+    handleFile() {
+      this.form.national_id_file = this.$refs.file.files[0]
+    },
     back() {
       this.sent = false
       this.form.verify_code = ''
@@ -239,23 +263,17 @@ export default {
         }, 1000)
       }
       if (data.valid == 0 && data.verify == 0) {
-        Swal.fire({
-          type: 'error',
-          title: 'خطأ في عملية التسجيل!',
-          text: 'ارجو اعادة المحاولة'
-        })
+        this.errorAlert({title: 'خطأ في عملية التسجيل!', message: 'ارجو اعادة المحاولة'})
         this.back()
       }
       this.sent = data.sent
     },
     async verify () {
-      const { data } = await this.form.post('/api/register')
+      const { data } = await this.form.submit('post', '/api/register', {transformRequest: [function (data, headers) {
+        return objectToFormData(data)
+      }]})
       if (data.verified == 0) {
-        Swal.fire({
-          type: 'error',
-          title: 'خطأ في التفعيل!',
-          text: 'ارجو التأكد من رمز التفعيل.'
-        })
+        this.errorAlert({title: 'خطأ في التفعيل!', message: 'ارجو التأكد من رمز التفعيل.'})
       }
       if (data.verified == 1 && data.registered == 1) {
         Swal.fire({
@@ -271,7 +289,9 @@ export default {
     },
     async register () {
       // Register the user.
-      const { data } = await this.form.post('/api/validate-registration', {phone: this.form.phone})
+      const { data } = await this.form.submit('post', '/api/validate-registration', {transformRequest: [function (data, headers) {
+        return objectToFormData(data)
+      }]})
       if (data.valid == 1 && data.verify == 1) {
         this.mustVerifyPhone = true
       }

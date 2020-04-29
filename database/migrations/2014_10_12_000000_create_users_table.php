@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('passport_no')->nullable();
             $table->string('date_of_birth');
             $table->string('email')->unique();
+            $table->string('employee_no');
             $table->string('employer');
             $table->string('phone')->unique();
             $table->string('state');

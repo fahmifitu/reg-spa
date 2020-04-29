@@ -12,16 +12,18 @@ class HandleRegistrationController extends Controller
 	private $sms;
 	private $validator;
     private $rules = [
-        'name' => 'required|max:255',
+        'name' => 'required|max:100',
         'date_of_birth' => 'required|date',
-        'email' => 'required|email|max:255|unique:users',
+        'email' => 'required|email|max:100|unique:users',
         'phone' => 'required|min:9|max:20|unique:users',
         'password' => 'required|min:6|confirmed',
-        'national_id' => 'required|max:255|unique:users',
-        'city' => 'required|max:255',
-        'address' => 'required|max:255',
-        'passport_no' => 'max:255|unique:users',
-        'employer' => 'required|max:255',
+        'national_id' => 'required|max:100|unique:users',
+        'national_id_file' => 'required | mimes:doc,pdf,docx,jpg,jpeg | max:5000',
+        'city' => 'required|max:100',
+        'address' => 'required|max:100',
+        'passport_no' => 'max:100|unique:users',
+        'employee_no' => 'required|max:100',
+        'employer' => 'required|max:100',
         'bank' => 'max:100',
         'branch' => 'max:100',
     ];
@@ -58,8 +60,9 @@ class HandleRegistrationController extends Controller
     	$code = mt_rand(100000, 999999);
     	// Store in session
     	session()->put('verification', $code);
+        // remove file from input
+        $input = array_diff_key($input, array_flip(['national_id_file']));
         session()->put('guest', $input);
-        // return response()->json(['verify' => 1, 'valid' => 1], 200);
 
         return $this->sms->sendSms($input['phone'], $code)->successful() ?
         	response()->json(['verify' => 1, 'valid' => 1, 'sent' => 1], 200):
@@ -105,10 +108,16 @@ class HandleRegistrationController extends Controller
             'address' => $input['address'],
             'passport_no' => $input['passport_no'],
             'employer' => $input['employer'],
+            'employee_no' => $input['employee_no'],
             'bank' => $input['bank'],
             'branch' => $input['branch'],
             'phone_verified_at' => $verified_at
         ]);
+        $attachment = $user->attach(
+            \Request::file('national_id_file'), [
+                'title' => 'National id file',
+                'key' => 'national_id_file'
+            ]);
 
         // send registration email?
         session()->flush();

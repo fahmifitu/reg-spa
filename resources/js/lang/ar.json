@@ -1,7 +1,7 @@
 {
   "ok": "نعم",
   "cancel": "الغاء",
-  "error_alert_title": "Oops...",
+  "error_alert_title": "عذراً...",
   "error_alert_text": "حصل خطأ ما! الرجاء المحاولة مرة اخرى.",
   "token_expired_alert_title": "انتهت صلاحية الجلسة!",
   "token_expired_alert_text": "الرجاء تسجيل الدخول مرة اخري.",
@@ -41,8 +41,10 @@
 
   "verify_code": "رمز التفعيل",
   "national_id": "الرقم الوطني",
+  "national_id_file": "ملف الرقم الوطني",
   "passport_no": "جواز السفر",
   "employer": "جهة العمل",
+  "employee_no": "الرقم الوظيفي",
   "date_of_birth": "تاريخ الميلاد",
   "branch": "الفرع المصرفي",
   "bank": "المصرف",
