@@ -12,7 +12,7 @@
 
   {{-- Global configuration object --}}
   <script>
-    window.config = {"appName":"Uni Portal","locale":"ar","locales":{"ar":"ar"}};
+    window.config  = {"appName":"Uni Portal","locale":"ar","locales":{"ar":"ar"}};
   </script>
 
   {{-- Load the application scripts --}}
