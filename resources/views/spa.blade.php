@@ -13,6 +13,7 @@
   {{-- Global configuration object --}}
   <script>
     window.config  = {"appName":"Uni Portal","locale":"ar","locales":{"ar":"ar"}};
+    window.employers = @json($employers);
   </script>
 
   {{-- Load the application scripts --}}

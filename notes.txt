@@ -1,0 +1,9 @@
+docker-compose up -d nginx mysql
+docker-compose up -d --build nginx mysql
+docker-compose down
+docker-compose stop {container-name}
+docker-compose logs {container-name}
+# stop all containers
+docker stop $(sudo docker ps -aq)
+# remove all files in dir
+rm /path/to/directory/*

@@ -147,6 +147,7 @@ return [
     */
 
     'attributes' => [
+        'other_employer' => 'جهة عمل اخرى',
         'verify_code'                  => 'رمز التفعيل',
         'date_of_birth'                  => 'تاريخ الميلاد',
         'national_id'                  => 'الرقم الوطني',

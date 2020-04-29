@@ -23,7 +23,8 @@ class HandleRegistrationController extends Controller
         'address' => 'required|max:100',
         'passport_no' => 'max:100|unique:users',
         'employee_no' => 'required|max:100',
-        'employer' => 'required|max:100',
+        'employer' => 'required_without:other_employer|max:100',
+        'other_employer' => 'required_without:employer|max:100',
         'bank' => 'max:100',
         'branch' => 'max:100',
     ];
@@ -93,7 +94,10 @@ class HandleRegistrationController extends Controller
 
         if ($validator->fails()) {
             session()->put('valid', false);
-        	return response()->json(['errors' => $validator->errors()], 422);
+        	return response()->json([
+                'valid' => 0,
+                'errors' => $validator->errors()
+            ], 422);
         }
 
         $user = User::create([
@@ -107,7 +111,8 @@ class HandleRegistrationController extends Controller
             'date_of_birth' => now(),
             'address' => $input['address'],
             'passport_no' => $input['passport_no'],
-            'employer' => $input['employer'],
+            'employer_id' => $input['employer'] ?? null,
+            'other_employer' => $input['other_employer'] ?? null,
             'employee_no' => $input['employee_no'],
             'bank' => $input['bank'],
             'branch' => $input['branch'],

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Employer;
+
 class SpaController extends Controller
 {
     /**
@@ -11,6 +13,7 @@ class SpaController extends Controller
      */
     public function __invoke()
     {
-        return view('spa');
+    	$employers = Employer::select(['id', 'name'])->get()->toArray();
+        return view('spa')->with('employers', $employers);
     }
 }

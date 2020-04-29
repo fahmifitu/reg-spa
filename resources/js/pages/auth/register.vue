@@ -115,22 +115,35 @@
               <has-error :form="form" field="passport_no" />
             </div>
           </div>
+          <div class="form-group row justify-content-center">
+            <div class="col-md-10">
+              <label>{{ $t('employee_no') }}</label>
+              <input v-model="form.employee_no" :class="{ 'is-invalid': form.errors.has('employee_no') }" class="form-control" type="text" name="employee_no">
+              <has-error :form="form" field="employee_no" />
+            </div>
+          </div>
           <!-- Employer employee -->
           <div class="row justify-content-center">
             <div class="col-md-5">
               <div class="form-group">
-                <label>{{ $t('employee_no') }}</label>
+                <label>{{ $t('employer') }}</label>
                 <span class="text-danger text-small">*</span>
-                <input v-model="form.employee_no" :class="{ 'is-invalid': form.errors.has('employee_no') }" class="form-control" type="text" name="employee_no">
-                <has-error :form="form" field="employee_no" />
+                <select class="form-control" @change="selectEmployer" :class="{ 'is-invalid': form.errors.has('employer') }">
+                  <option disabled selected>اختر جهة عمل</option>
+                  <option v-for="employer in employers" v-bind:value="employer.id">
+                  {{ employer.name }}
+                  </option>
+                  <option value="">اخرى</option>
+                </select>
+                <has-error :form="form" field="employer" />
               </div>
             </div>
             <div class="col-md-5">
             <div class="form-group">
-              <label>{{ $t('employer') }}</label>
+              <label>{{ $t('other_employer') }}</label>
               <span class="text-danger text-small">*</span>
-              <input v-model="form.employer" :class="{ 'is-invalid': form.errors.has('employer') }" class="form-control" type="text" name="employer">
-              <has-error :form="form" field="employer" />
+              <input v-model="form.other_employer" :class="{ 'is-invalid': form.errors.has('other_employer') }" class="form-control" type="text" name="other_employer" :disabled="other_employer_disabled" ref="other_employer">
+              <has-error :form="form" field="other_employer"/>
             </div>
             </div>
           </div>
@@ -211,6 +224,8 @@ export default {
 
   data: () => ({
     sent: false,
+    other_employer_disabled: true,
+    employers: window.employers,
     form: new Form({
       name: '',
       national_id: '',
@@ -221,6 +236,7 @@ export default {
       passport_no: '',
       employee_no: '',
       employer: '',
+      other_employer: '',
       email: '',
       bank: '',
       branch: '',
@@ -245,7 +261,12 @@ export default {
     })
   },
   methods: {
-    handleFile() {
+    selectEmployer(e) {
+      this.form.employer = e.target.value;
+      this.other_employer_disabled = e.target.value == '' ? false: true;
+      this.form.other_employer = ''
+    },
+    handleFile(e) {
       this.form.national_id_file = this.$refs.file.files[0]
     },
     back() {
@@ -268,24 +289,33 @@ export default {
       }
       this.sent = data.sent
     },
-    async verify () {
-      const { data } = await this.form.submit('post', '/api/register', {transformRequest: [function (data, headers) {
+    verify () {
+      this.form.submit('post', '/api/register', {transformRequest: [function (data, headers) {
         return objectToFormData(data)
       }]})
-      if (data.verified == 0) {
-        this.errorAlert({title: 'خطأ في التفعيل!', message: 'ارجو التأكد من رمز التفعيل.'})
-      }
-      if (data.verified == 1 && data.registered == 1) {
-        Swal.fire({
-          type: 'success',
-          title: 'تم عملية التسجيل بنجاح!',
-          text: 'سيتم التواصل معك قريبا.',
-          timer: 4000,
-          onClose: function() {
-            location.reload();
-          }
-        })
-      }
+      .then(res => {
+        const data = res.data
+        if (data.verified == 0) {
+          this.errorAlert({title: 'خطأ في التفعيل!', text: 'ارجو التأكد من رمز التفعيل.'})
+        }
+        if (data.verified == 1 && data.registered == 1) {
+          Swal.fire({
+            type: 'success',
+            title: 'تم عملية التسجيل بنجاح!',
+            text: 'سيتم التواصل معك قريبا.',
+            timer: 4000,
+            onClose: function() {
+              location.reload();
+            }
+          })
+        }
+      })
+      .catch( error => {
+        const data = error.response.data;
+        if (data.valid == 0) {
+          this.back()
+        }
+      })
     },
     async register () {
       // Register the user.

@@ -20,7 +20,7 @@ class User extends Authenticatable implements JWTSubject //, MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'phone', 'national_id', 'national_id_file', 'state', 'address', 'passport_no', 'employee_no', 'employer', 'bank', 'branch', 'date_of_birth', 'phone_verified_at'
+        'name', 'email', 'password', 'phone', 'national_id', 'national_id_file', 'state', 'address', 'passport_no', 'employee_no', 'bank', 'branch', 'date_of_birth', 'phone_verified_at', 'employer_id'
     ];
 
     /**
@@ -60,6 +60,10 @@ class User extends Authenticatable implements JWTSubject //, MustVerifyEmail
         return 'https://www.gravatar.com/avatar/'.md5(strtolower($this->email)).'.jpg?s=200&d=mm';
     }
 
+    public function employer()
+    {
+        return $this->belongsTo('App\Employer');
+    }
     /**
      * Get the oauth providers.
      *
