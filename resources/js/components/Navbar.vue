@@ -47,7 +47,7 @@
                 {{ $t('login') }}
               </router-link>
             </li> -->
-            <li class="nav-item pl-3">
+            <li class="nav-item pl-3 pr-3">
               <router-link :to="{ name: 'register' }" class="nav-link" active-class="active">
                 {{ $t('register') }}
               </router-link>

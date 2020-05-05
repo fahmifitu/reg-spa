@@ -60,7 +60,7 @@ $sub-menu-width-md: 200px;
 $sub-menu-width-xs: 190px;
 
 $navbar-height: 90px;
-$navbar-height-xs: 70px;
+$navbar-height-xs: 110px;
 $navbar-height-md: 90px;
 $navbar-height-lg: 90px;
 
@@ -238,7 +238,9 @@ hr {
     padding-left: 0.75rem !important;
   }
 }
-
+.btn:hover {
+  cursor: pointer;
+}
 .disable-text-selection {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -334,7 +336,7 @@ hr {
 
 .logo-single {
   width: 110px;
-  height: 35px;
+  height: 85px;
   background: url($logoPath) no-repeat;
   background-size: contain;
   background-position: center center;
