@@ -7,7 +7,7 @@
       <h4 v-if="title" class="card-title">
         {{ title }}
         <br>
-        <span class="mt-2 text-muted d-block" style="font-size: 0.9rem"> {{ subtitle }} </span>
+        <span class="mt-2 d-block" style="font-size: 0.9rem; font-weight:400"> {{ subtitle }} </span>
       </h4>
       <slot />
     </div>

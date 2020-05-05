@@ -64,9 +64,11 @@
               <label class="mb-0">{{ $t('phone') }}</label>
               <span class="text-danger text-small">*</span>
               <br>
-              <span class="text-muted">
-                رقم الهاتف المحمول المسجل سيتم ربطه بحسابك و بطاقة يوني
+              <div class="mb-1" >
+              <span style="font-size: 0.87rem">
+                رقم الهاتف المحمول المسجل سيتم ربطه بحسابك و بطاقة يوني.
               </span>
+              </div>
               <input dir="ltr" style="text-align: end" v-model="form.phone" :class="{ 'is-invalid': form.errors.has('phone') }" class="form-control" type="text" name="phone" v-mask="'(##)###-####'" placeholder="(91)000-0000">
               <has-error :form="form" field="phone" />
             </div>
@@ -365,3 +367,9 @@ export default {
   }
 }
 </script>
+
+<style>
+  label {
+    font-weight: 600;
+  }
+</style>
