@@ -108,7 +108,7 @@ class HandleRegistrationController extends Controller
             'password' => bcrypt($input['password']),
             'national_id' => $input['national_id'],
             'state' => $input['city'],
-            'date_of_birth' => now(),
+            'date_of_birth' => $input['date_of_birth'],
             'address' => $input['address'],
             'passport_no' => $input['passport_no'] ?? null,
             'employer_id' => $input['employer'] ?? null,
