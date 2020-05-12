@@ -110,12 +110,12 @@ class HandleRegistrationController extends Controller
             'state' => $input['city'],
             'date_of_birth' => now(),
             'address' => $input['address'],
-            'passport_no' => $input['passport_no'],
+            'passport_no' => $input['passport_no'] ?? null,
             'employer_id' => $input['employer'] ?? null,
             'other_employer' => $input['other_employer'] ?? null,
-            'employee_no' => $input['employee_no'],
-            'bank' => $input['bank'],
-            'branch' => $input['branch'],
+            'employee_no' => $input['employee_no'] ?? null,
+            'bank' => $input['bank'] ?? null,
+            'branch' => $input['branch'] ?? null,
             'phone_verified_at' => $verified_at
         ]);
         $attachment = $user->attach(
