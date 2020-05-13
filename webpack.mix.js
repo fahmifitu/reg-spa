@@ -10,6 +10,10 @@ mix
   // .sass('resources/sass/app-rtl.scss', 'public/dist/css')
   .disableNotifications()
 
+mix
+  .js('resources/js/admin-app.js', 'public/dist/js')
+  .sass('resources/sass/admin-app.scss', 'public/dist/css')
+
 if (mix.inProduction()) {
   mix
     // .extract() // Disabled until resolved: https://github.com/JeffreyWay/laravel-mix/issues/1889

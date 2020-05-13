@@ -19,6 +19,8 @@
     "@fortawesome/vue-fontawesome": "^0.1.6",
     "axios": "^0.18.1",
     "bootstrap": "^4.3.1",
+    "datatables.net-bs4": "^1.10.21",
+    "datatables.net-buttons-bs4": "^1.6.2",
     "jquery": "^3.4.1",
     "js-cookie": "^2.2.0",
     "object-to-formdata": "^3.0.9",

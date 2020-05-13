@@ -6,6 +6,7 @@ use App\Services\SmsApiService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\User;
+use App\Employer;
 
 class HandleRegistrationController extends Controller
 {
@@ -100,6 +101,7 @@ class HandleRegistrationController extends Controller
             ], 422);
         }
 
+        $employer = Employer::find($input['employer']);
         $user = User::create([
             'name' => $input['name'],
             'email' => $input['email'],
@@ -112,7 +114,7 @@ class HandleRegistrationController extends Controller
             'address' => $input['address'],
             'passport_no' => $input['passport_no'] ?? null,
             'employer_id' => $input['employer'] ?? null,
-            'other_employer' => $input['other_employer'] ?? null,
+            'other_employer' => $input['other_employer'] ?? $employer->name,
             'employee_no' => $input['employee_no'] ?? null,
             'bank' => $input['bank'] ?? null,
             'branch' => $input['branch'] ?? null,
