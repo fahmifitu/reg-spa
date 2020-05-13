@@ -24,6 +24,9 @@ class UsersDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
+            ->editColumn('attachment', function ($user) {
+                return $user->attachment('national_id_file')->url ?? 'لا يوجد';
+            })
             ->editColumn('created_at', function ($user) {
                 return $user->created_at->format('Y/m/d H:m:s');
             })

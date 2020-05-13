@@ -16,38 +16,42 @@
 {!! $dataTable->scripts() !!}
 
  <script id="details-template" type="text/x-handlebars-template">
-        @verbatim
-            <table class="table">
-                <tr>
-                    <td>جواز السفر</td>
-                    <td>{{passport_no}}</td>
-                </tr>
-                <tr>
-                    <td>تاريخ الميلاد</td>
-                    <td>{{date_of_birth}}</td>
-                </tr>
-                <tr>
-                    <td>البريد الالكتروني</td>
-                    <td>{{ email }}</td>
-                </tr>
-                <tr>
-                    <td>الرقم الوظيفي</td>
-                    <td>{{ employee_no }}</td>
-                </tr>
-                <tr>
-                    <td>المدينة</td>
-                    <td>{{ state }}</td>
-                </tr>
-                <tr>
-                    <td>العنوان</td>
-                    <td>{{ address }}</td>
-                </tr>
-                <tr>
-                    <td>الفرع / المصرف</td>
-                    <td>{{ branch }} / {{ bank }}</td>
-                </tr>
-            </table>
-        @endverbatim
+    @verbatim
+    <table class="table">
+        <tr>
+            <td>جواز السفر</td>
+            <td>{{passport_no}}</td>
+        </tr>
+        <tr>
+            <td>تاريخ الميلاد</td>
+            <td>{{date_of_birth}}</td>
+        </tr>
+        <tr>
+            <td>البريد الالكتروني</td>
+            <td>{{ email }}</td>
+        </tr>
+        <tr>
+            <td>الرقم الوظيفي</td>
+            <td>{{ employee_no }}</td>
+        </tr>
+        <tr>
+            <td>المدينة</td>
+            <td>{{ state }}</td>
+        </tr>
+        <tr>
+            <td>العنوان</td>
+            <td>{{ address }}</td>
+        </tr>
+        <tr>
+            <td>الفرع / المصرف</td>
+            <td>{{ branch }} / {{ bank }}</td>
+        </tr>
+        <tr>
+            <td>ملف الرقم الوطني</td>
+            <td><a href="{{ attachment }}"> تحميل </a></td>
+        </tr>
+    </table>
+    @endverbatim
     </script>
 
     <script>
