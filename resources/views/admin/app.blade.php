@@ -31,7 +31,7 @@
                 <span class="navbar-brand">
                     ادارة المستخدمين
                 </span>
-                <a class="btn btn-sm btn-dark" href="https://log:out@{{ route('admin.users.index') }}">
+                <a class="btn btn-sm btn-dark" href="#">
                     الخروج
                 </a>
             </div>
